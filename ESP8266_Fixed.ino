@@ -2,19 +2,20 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h>
+#include <time.h>
 
 const char* ssid = "Redmi";
 const char* password = "12345678";
 
+WiFiClientSecure client;
 String receivedData = "";
 unsigned long lastSendTime = 0;
-const unsigned long SEND_DELAY = 3000; // 3 seconds between sends (increased)
+const unsigned long SEND_DELAY = 3000;
 int connectionFailures = 0;
 
 void setup()
 {
-  Serial.begin(115200); // Increased baud rate for ESP8266
-
+  Serial.begin(115200);
   delay(1000);
 
   WiFi.mode(WIFI_STA);
@@ -34,6 +35,22 @@ void setup()
     Serial.println("\nWiFi Connected");
     Serial.print("IP: ");
     Serial.println(WiFi.localIP());
+    
+    // Sync time with NTP server (critical for SSL)
+    Serial.println("Syncing time with NTP...");
+    configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+    
+    time_t now = time(nullptr);
+    int retries = 0;
+    while (now < 24 * 3600 && retries < 20) {
+      delay(500);
+      Serial.print(".");
+      now = time(nullptr);
+      retries++;
+    }
+    Serial.println();
+    Serial.print("Time: ");
+    Serial.println(ctime(&now));
   } else {
     Serial.println("\nWiFi Connection Failed");
   }
@@ -111,33 +128,37 @@ void sendData(String name, float weight)
 {
   if (WiFi.status() != WL_CONNECTED)
   {
-    Serial.println("WiFi Disconnected - cannot send data");
+    Serial.println("✗ WiFi Disconnected - cannot send data");
     connectionFailures++;
     return;
   }
 
-  // Create a new client for each request
-  std::unique_ptr<BearSSL::WiFiClientSecure> client(new BearSSL::WiFiClientSecure);
-  
-  // For Firebase, we skip certificate validation
-  client->setInsecure();
+  Serial.print("Signal Strength: ");
+  Serial.print(WiFi.RSSI());
+  Serial.println(" dBm");
+
+  // Reset client connection
+  if (client.connected()) {
+    client.stop();
+    delay(500);
+  }
+
+  client.setInsecure();
 
   HTTPClient http;
 
   String url = "https://weight-monitoring-database-default-rtdb.europe-west1.firebasedatabase.app/weights.json";
 
-  Serial.println("Connecting to Firebase...");
+  Serial.println("Attempting Firebase connection...");
 
-  // Begin connection with NO timeout (uses default longer timeout)
-  if (!http.begin(*client, url))
+  if (!http.begin(client, url))
   {
-    Serial.println("HTTP Begin Failed");
+    Serial.println("✗ HTTP Begin Failed");
     connectionFailures++;
     return;
   }
 
-  // Set longer timeout (in milliseconds) - 10 seconds for HTTPS handshake
-  http.setTimeout(10000);
+  http.setTimeout(15000); // 15 seconds timeout
 
   http.addHeader("Content-Type", "application/json");
 
@@ -148,8 +169,10 @@ void sendData(String name, float weight)
   String json;
   serializeJson(doc, json);
 
-  Serial.println("Sending JSON:");
-  Serial.println(json);
+  Serial.print("JSON Size: ");
+  Serial.print(json.length());
+  Serial.println(" bytes");
+  Serial.println("Sending: " + json);
 
   int httpCode = http.POST(json);
 
@@ -159,12 +182,11 @@ void sendData(String name, float weight)
   if (httpCode > 0)
   {
     String payload = http.getString();
-    Serial.println("Response:");
-    Serial.println(payload);
+    Serial.println("Response: " + payload);
     
     if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_CREATED) {
       Serial.println("✓ Data sent successfully!");
-      connectionFailures = 0; // Reset on success
+      connectionFailures = 0;
     } else {
       Serial.print("⚠ Unexpected HTTP code: ");
       Serial.println(httpCode);
@@ -177,18 +199,16 @@ void sendData(String name, float weight)
     Serial.println(http.errorToString(httpCode));
     connectionFailures++;
     
-    // If too many failures, restart WiFi
     if (connectionFailures > 3) {
       Serial.println("Too many failures - restarting WiFi...");
       WiFi.disconnect();
-      delay(1000);
-      WiFi.begin(ssid, password);
+      delay(2000);
+      WiFi.reconnect();
       connectionFailures = 0;
     }
   }
 
   http.end();
-  client.reset(); // Clean up
-
-  delay(1000); // Increased delay after request
+  client.stop();
+  delay(1000);
 }
