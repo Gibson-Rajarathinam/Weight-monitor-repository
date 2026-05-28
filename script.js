@@ -6,6 +6,7 @@ const FIREBASE_URL = 'https://weight-monitoring-database-default-rtdb.europe-wes
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const clearBtn = document.getElementById('clearBtn');
+const clearCardsBtn = document.getElementById('clearCardsBtn');
 const apiUrlInput = document.getElementById('apiUrl');
 const dataContainer = document.getElementById('dataContainer');
 const logsList = document.getElementById('logsList');
@@ -16,6 +17,9 @@ loadLogsFromStorage();
 startBtn.addEventListener('click', startFetching);
 stopBtn.addEventListener('click', stopFetching);
 clearBtn.addEventListener('click', clearLogs);
+if (clearCardsBtn) {
+    clearCardsBtn.addEventListener('click', clearCards);
+}
 
 function startFetching() {
     if (isFetching) return;
@@ -44,7 +48,8 @@ function stopFetching() {
 }
 
 function fetchData() {
-    fetch(FIREBASE_URL + '/weights.json')
+    // Fetch only the latest entry using Firebase query
+    fetch(FIREBASE_URL + '/weights.json?orderBy="$key"&limitToLast=1')
         .then(response => response.json())
         .then(data => {
             if (data) {
@@ -62,19 +67,24 @@ function fetchData() {
 function displayData(data) {
     dataContainer.innerHTML = '';
 
+    let items = [];
+
     // Handle different data formats
     if (Array.isArray(data)) {
-        data.forEach((item, index) => {
-            addDataItem(item, index);
-        });
+        items = data;
     } else if (typeof data === 'object' && data !== null) {
         // Firebase format: {id: {name, value}, id: {name, value}}
         Object.entries(data).forEach(([key, item], index) => {
             if (typeof item === 'object' && item.name && item.value !== undefined) {
-                addDataItem(item, index);
+                items.push(item);
             }
         });
     }
+
+    // Limit to 10 items
+    items.slice(0, 10).forEach((item, index) => {
+        addDataItem(item, index);
+    });
 }
 
 function addDataItem(item, index) {
@@ -155,6 +165,11 @@ function clearLogs() {
         displayLogs();
         alert('Logs cleared!');
     }
+}
+
+function clearCards() {
+    dataContainer.innerHTML = '';
+    updateStatus('stopped', 'Cards cleared');
 }
 
 function updateStatus(type, message) {
