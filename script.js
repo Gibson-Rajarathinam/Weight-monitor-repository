@@ -1,6 +1,8 @@
 let isFetching = false;
 let fetchInterval;
 
+const FIREBASE_URL = 'https://weight-monitoring-database-default-rtdb.europe-west1.firebasedatabase.app';
+
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const clearBtn = document.getElementById('clearBtn');
@@ -18,23 +20,17 @@ clearBtn.addEventListener('click', clearLogs);
 function startFetching() {
     if (isFetching) return;
 
-    const apiUrl = apiUrlInput.value.trim();
-    if (!apiUrl) {
-        alert('Please enter a valid API URL');
-        return;
-    }
-
     isFetching = true;
     startBtn.disabled = true;
     stopBtn.disabled = false;
 
     // Fetch immediately first
-    fetchData(apiUrl);
+    fetchData();
 
-    // Then fetch every 5 seconds
+    // Then fetch every 2 seconds
     fetchInterval = setInterval(() => {
-        fetchData(apiUrl);
-    }, 5000);
+        fetchData();
+    }, 2000);
 
     updateStatus('running', 'Fetching data...');
 }
@@ -47,18 +43,15 @@ function stopFetching() {
     updateStatus('stopped', 'Stopped');
 }
 
-function fetchData(apiUrl) {
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
+function fetchData() {
+    fetch(FIREBASE_URL + '/weights.json')
+        .then(response => response.json())
         .then(data => {
-            displayData(data);
-            logData(data);
-            updateStatus('running', 'Connected ✓');
+            if (data) {
+                displayData(data);
+                logData(data);
+                updateStatus('running', 'Connected ✓');
+            }
         })
         .catch(error => {
             console.error('Error fetching data:', error);
