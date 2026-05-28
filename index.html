@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP8266 Data Logger</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>ESP8266 DATA LOGGER</h1>
+        </header>
+
+        <div class="controls">
+            <input type="text" id="apiUrl" placeholder="Enter ESP32 API URL (e.g., http://192.168.x.x/api/data)" value="http://localhost:3000/api/data">
+            <button id="startBtn">Start Fetching</button>
+            <button id="stopBtn">Stop Fetching</button>
+            <button id="clearBtn">Clear Logs</button>
+        </div>
+
+        <div class="data-container" id="dataContainer">
+            <!-- Data will be displayed here -->
+        </div>
+
+        <div class="logs-section">
+            <h2>Logged Data</h2>
+            <div class="logs" id="logsList">
+                <p>No data logged yet</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
