@@ -1,5 +1,6 @@
 let isFetching = false;
 let fetchInterval;
+let lastDisplayedData = null;
 
 const FIREBASE_URL = 'https://weight-monitoring-database-default-rtdb.europe-west1.firebasedatabase.app';
 
@@ -53,7 +54,11 @@ function fetchData() {
         .then(response => response.json())
         .then(data => {
             if (data) {
-                displayData(data);
+                // Only update display if data has changed
+                if (JSON.stringify(data) !== JSON.stringify(lastDisplayedData)) {
+                    lastDisplayedData = data;
+                    displayData(data);
+                }
                 logData(data);
                 updateStatus('running', 'Connected ✓');
             }

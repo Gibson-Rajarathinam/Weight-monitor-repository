@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-color: #f5f7fa;
     min-height: 100vh;
     padding: 20px;
 }
@@ -17,161 +17,144 @@ body {
 }
 
 .header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 40px;
+    background-color: #2c3e50;
+    padding: 30px;
     text-align: center;
     margin-bottom: 30px;
-    border-radius: 15px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
     color: #fff;
-    font-size: 40px;
-    font-weight: 900;
-    letter-spacing: 3px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 1px;
 }
 
 .controls {
     display: flex;
-    gap: 12px;
-    margin-bottom: 35px;
+    gap: 10px;
+    margin-bottom: 30px;
     flex-wrap: wrap;
     justify-content: center;
 }
 
 .controls button {
-    padding: 12px 28px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 10px 20px;
+    background-color: #2c3e50;
     color: white;
-    border: none;
-    border-radius: 25px;
+    border: 1px solid #34495e;
+    border-radius: 4px;
     cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 13px;
 }
 
 .controls button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    background-color: #34495e;
 }
 
 .controls button:active {
-    transform: translateY(0);
+    background-color: #1a252f;
 }
 
 .data-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 16px;
-    margin-bottom: 35px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 30px;
 }
 
 .data-item {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-    animation: slideIn 0.3s ease-in-out;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
-    min-height: 120px;
+    background-color: #ffffff;
+    padding: 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e6ed;
+    transition: all 0.2s ease;
+    height: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
 .data-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    border-color: #2c3e50;
 }
 
 .data-item .label {
-    color: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
     font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 8px;
+    font-size: 12px;
+    margin-bottom: 6px;
     text-transform: capitalize;
-    letter-spacing: 0.5px;
 }
 
 .data-item .value {
-    color: #fff;
-    font-size: 28px;
-    font-weight: 900;
+    color: #2c3e50;
+    font-size: 20px;
+    font-weight: 700;
     word-break: break-all;
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
 .data-item .timestamp {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 11px;
-    margin-top: 8px;
+    color: #7f8c8d;
+    font-size: 10px;
+    margin-top: 6px;
 }
 
 .logs-section {
     background-color: #fff;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e6ed;
 }
 
 .logs-section h2 {
-    color: #333;
-    margin-bottom: 18px;
-    font-size: 24px;
-    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .logs {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    max-height: 450px;
+    background-color: #f9fafb;
+    padding: 12px;
+    border-radius: 4px;
+    max-height: 400px;
     overflow-y: auto;
 }
 
 .log-entry {
     background-color: #fff;
-    padding: 12px 15px;
-    margin-bottom: 10px;
-    border-left: 4px solid #667eea;
-    border-radius: 6px;
-    font-size: 13px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-left: 3px solid #2c3e50;
+    border-radius: 2px;
+    font-size: 12px;
     color: #555;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .log-entry:hover {
-    background-color: #f0f3ff;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+    background-color: #f0f4f8;
+    border-left-color: #34495e;
 }
 
 .log-entry .time {
-    color: #999;
-    font-size: 11px;
-    font-weight: 600;
+    color: #95a5a6;
+    font-size: 10px;
+    font-weight: 500;
 }
 
 .log-entry strong {
-    color: #667eea;
+    color: #2c3e50;
 }
 
 .status {
@@ -192,31 +175,27 @@ body {
 
 @media (max-width: 768px) {
     .header h1 {
-        font-size: 28px;
+        font-size: 24px;
     }
 
     .controls {
-        flex-direction: column;
+        flex-direction: row;
     }
 
     .controls button {
-        width: 100%;
+        flex: 1;
+        min-width: 100px;
     }
 
     .data-container {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
 
     .data-item {
-        padding: 12px;
-        min-height: 100px;
+        height: 90px;
     }
 
     .data-item .value {
-        font-size: 22px;
-    }
-
-    .data-item .label {
-        font-size: 12px;
+        font-size: 18px;
     }
 }
