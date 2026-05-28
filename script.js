@@ -103,7 +103,7 @@ function addDataItem(item, index) {
 
     dataItem.innerHTML = `
         <div class="label">${name}</div>
-        <div class="value">${formatValue(value)}</div>
+        <div class="value">${formatValue(value)} <span class="unit">Kg</span></div>
         <div class="timestamp">${timestamp}</div>
     `;
 

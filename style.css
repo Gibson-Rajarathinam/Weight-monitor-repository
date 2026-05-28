@@ -6,9 +6,10 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f7fa;
+    background-color: #1a1f2e;
     min-height: 100vh;
     padding: 20px;
+    color: #e0e0e0;
 }
 
 .container {
@@ -17,16 +18,17 @@ body {
 }
 
 .header {
-    background-color: #2c3e50;
+    background-color: #242d3f;
     padding: 30px;
     text-align: center;
     margin-bottom: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    border: 1px solid #3a4555;
 }
 
 .header h1 {
-    color: #fff;
+    color: #ffffff;
     font-size: 32px;
     font-weight: 600;
     letter-spacing: 1px;
@@ -42,23 +44,24 @@ body {
 
 .controls button {
     padding: 10px 20px;
-    background-color: #2c3e50;
+    background-color: #2a5fdf;
     color: white;
-    border: 1px solid #34495e;
+    border: 1px solid #3a6ff0;
     border-radius: 4px;
     cursor: pointer;
     font-weight: 500;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     font-size: 13px;
 }
 
 .controls button:hover {
-    background-color: #34495e;
+    background-color: #3a70ff;
+    box-shadow: 0 4px 8px rgba(42, 95, 223, 0.3);
 }
 
 .controls button:active {
-    background-color: #1a252f;
+    background-color: #1a4fdf;
 }
 
 .data-container {
@@ -69,11 +72,11 @@ body {
 }
 
 .data-item {
-    background-color: #ffffff;
+    background-color: #2a323f;
     padding: 12px;
     border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e0e6ed;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    border: 1px solid #3a4555;
     transition: all 0.2s ease;
     height: 100px;
     display: flex;
@@ -82,12 +85,13 @@ body {
 }
 
 .data-item:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    border-color: #2c3e50;
+    box-shadow: 0 4px 12px rgba(42, 95, 223, 0.3);
+    border-color: #2a5fdf;
+    background-color: #313a4f;
 }
 
 .data-item .label {
-    color: #2c3e50;
+    color: #a0aac0;
     font-weight: 600;
     font-size: 12px;
     margin-bottom: 6px;
@@ -95,36 +99,42 @@ body {
 }
 
 .data-item .value {
-    color: #2c3e50;
+    color: #ffffff;
     font-size: 20px;
     font-weight: 700;
     word-break: break-all;
     line-height: 1.1;
 }
 
+.data-item .value .unit {
+    font-size: 12px;
+    color: #a0aac0;
+    margin-left: 4px;
+}
+
 .data-item .timestamp {
-    color: #7f8c8d;
+    color: #6b7a8f;
     font-size: 10px;
     margin-top: 6px;
 }
 
 .logs-section {
-    background-color: #fff;
+    background-color: #242d3f;
     padding: 20px;
     border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e0e6ed;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border: 1px solid #3a4555;
 }
 
 .logs-section h2 {
-    color: #2c3e50;
+    color: #ffffff;
     margin-bottom: 15px;
     font-size: 18px;
     font-weight: 600;
 }
 
 .logs {
-    background-color: #f9fafb;
+    background-color: #1f2636;
     padding: 12px;
     border-radius: 4px;
     max-height: 400px;
@@ -132,29 +142,29 @@ body {
 }
 
 .log-entry {
-    background-color: #fff;
+    background-color: #2a323f;
     padding: 10px 12px;
     margin-bottom: 8px;
-    border-left: 3px solid #2c3e50;
+    border-left: 3px solid #2a5fdf;
     border-radius: 2px;
     font-size: 12px;
-    color: #555;
+    color: #c0c8d8;
     transition: all 0.2s ease;
 }
 
 .log-entry:hover {
-    background-color: #f0f4f8;
-    border-left-color: #34495e;
+    background-color: #313a4f;
+    border-left-color: #3a70ff;
 }
 
 .log-entry .time {
-    color: #95a5a6;
+    color: #6b7a8f;
     font-size: 10px;
     font-weight: 500;
 }
 
 .log-entry strong {
-    color: #2c3e50;
+    color: #2a5fdf;
 }
 
 .status {
