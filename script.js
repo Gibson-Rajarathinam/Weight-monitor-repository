@@ -68,9 +68,11 @@ function displayData(data) {
             addDataItem(item, index);
         });
     } else if (typeof data === 'object' && data !== null) {
-        // If data is a single object, display it
-        Object.entries(data).forEach(([key, value], index) => {
-            addDataItem({ name: key, value: value }, index);
+        // Firebase format: {id: {name, value}, id: {name, value}}
+        Object.entries(data).forEach(([key, item], index) => {
+            if (typeof item === 'object' && item.name && item.value !== undefined) {
+                addDataItem(item, index);
+            }
         });
     }
 }
