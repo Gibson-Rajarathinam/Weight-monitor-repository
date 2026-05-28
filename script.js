@@ -32,10 +32,10 @@ function startFetching() {
     // Fetch immediately first
     fetchData();
 
-    // Then fetch every 2 seconds
+    // Then fetch every 5 seconds (reduced from 2 to avoid Firebase contention)
     fetchInterval = setInterval(() => {
         fetchData();
-    }, 2000);
+    }, 5000);
 
     updateStatus('running', 'Fetching data...');
 }

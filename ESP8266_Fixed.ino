@@ -8,7 +8,8 @@ const char* password = "12345678";
 
 String receivedData = "";
 unsigned long lastSendTime = 0;
-const unsigned long SEND_DELAY = 2000; // 2 seconds between sends
+const unsigned long SEND_DELAY = 3000; // 3 seconds between sends (increased)
+int connectionFailures = 0;
 
 void setup()
 {
@@ -111,13 +112,14 @@ void sendData(String name, float weight)
   if (WiFi.status() != WL_CONNECTED)
   {
     Serial.println("WiFi Disconnected - cannot send data");
+    connectionFailures++;
     return;
   }
 
   // Create a new client for each request
   std::unique_ptr<BearSSL::WiFiClientSecure> client(new BearSSL::WiFiClientSecure);
   
-  // For Firebase, we skip certificate validation (use with caution in production)
+  // For Firebase, we skip certificate validation
   client->setInsecure();
 
   HTTPClient http;
@@ -126,15 +128,16 @@ void sendData(String name, float weight)
 
   Serial.println("Connecting to Firebase...");
 
-  // Begin connection
+  // Begin connection with NO timeout (uses default longer timeout)
   if (!http.begin(*client, url))
   {
     Serial.println("HTTP Begin Failed");
+    connectionFailures++;
     return;
   }
 
-  // Set timeout (in milliseconds)
-  http.setTimeout(5000);
+  // Set longer timeout (in milliseconds) - 10 seconds for HTTPS handshake
+  http.setTimeout(10000);
 
   http.addHeader("Content-Type", "application/json");
 
@@ -160,17 +163,32 @@ void sendData(String name, float weight)
     Serial.println(payload);
     
     if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_CREATED) {
-      Serial.println("Data sent successfully!");
+      Serial.println("✓ Data sent successfully!");
+      connectionFailures = 0; // Reset on success
+    } else {
+      Serial.print("⚠ Unexpected HTTP code: ");
+      Serial.println(httpCode);
+      connectionFailures++;
     }
   }
   else
   {
-    Serial.print("HTTP Error: ");
+    Serial.print("✗ HTTP Error: ");
     Serial.println(http.errorToString(httpCode));
+    connectionFailures++;
+    
+    // If too many failures, restart WiFi
+    if (connectionFailures > 3) {
+      Serial.println("Too many failures - restarting WiFi...");
+      WiFi.disconnect();
+      delay(1000);
+      WiFi.begin(ssid, password);
+      connectionFailures = 0;
+    }
   }
 
   http.end();
   client.reset(); // Clean up
 
-  delay(500);
+  delay(1000); // Increased delay after request
 }
