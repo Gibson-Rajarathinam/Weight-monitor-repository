@@ -116,6 +116,15 @@ function logData(data) {
     const logs = JSON.parse(localStorage.getItem('sensorLogs')) || [];
     const timestamp = new Date().toLocaleString();
 
+    // Check if data is different from last logged entry
+    if (logs.length > 0) {
+        const lastLog = logs[logs.length - 1];
+        if (JSON.stringify(lastLog.data) === JSON.stringify(data)) {
+            // Data is the same, don't log
+            return;
+        }
+    }
+
     const logEntry = {
         timestamp: timestamp,
         data: data
